@@ -54,10 +54,15 @@ _Avoid_: resource (English), reference, ressource de cadrage.
 ### Status
 
 **Statut** (of an Élément requis):
-Where a single Élément requis stands. The flat set is **obtenu** (in hand and valid),
-**manquant** (not yet obtained), and — for a Livrable only — **à corriger** (submitted
-but sent back as wrong/incomplete). Deliberately flat, not a branched
-submitter→reviewer→approver machine.
+Where a single Élément requis stands. The flat set is **obtenu**, **manquant** (not yet
+obtained), and — for a Livrable only — **à corriger** (submitted but sent back as
+wrong/incomplete). **obtenu** means different things per subtype: for a Ressource, in
+hand and valid (nothing left to check); for a Livrable, submitted and presumed fine —
+optimistic, not a third-party verdict, since the system has no way to know the verdict
+until told (ADR-0007). A rejection is exactly the event that contradicts that optimism
+and moves a Livrable to `à corriger`. Deliberately flat, not a branched
+submitter→reviewer→approver machine — there is no separate "submitted, awaiting
+judgment" status.
 _Avoid_: present/absent, complete/incomplete, en construction/en instruction (a
 platform's states, not ours).
 

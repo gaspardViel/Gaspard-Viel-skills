@@ -20,7 +20,7 @@ Read the **Manifeste**. Choose one element that is `manquant` or `à corriger` t
 
 ### 2. Write its Definition-of-Done
 
-Write or refresh the checkable criteria for *this* element reaching `obtenu`. For an `à corriger` **Livrable**, fold in what the third party sent it back for.
+Write or refresh the checkable criteria for *this* element reaching `obtenu`. For an `à corriger` **Livrable**, fold in the rejection motif that `/suivi` recorded in the element's Relance log when the rejection came in (ADR-0007) — what the third party sent it back for.
 
 **Completion criterion:** a checklist exists that, when green, means this element is `obtenu`.
 
