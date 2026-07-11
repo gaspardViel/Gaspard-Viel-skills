@@ -4,7 +4,14 @@ Last updated: 2026-07-11. Pick up the design of the non-dev, file-deliverable sk
 
 ## Where we are
 
-The bank's **domain model is settled** ([CONTEXT.md](CONTEXT.md) + [docs/adr/](docs/adr/) 0001–0009) and the **five skills are scaffolded** in `.claude/skills/`: `on-ramp`, `cadrage`, `traiter`, `suivi`, `classement`. Each has a description, steps, and completion criteria, using the fixed leading words (skill names + the CONTEXT.md glossary).
+The bank's **domain model is settled** ([CONTEXT.md](CONTEXT.md) + [docs/adr/](docs/adr/) 0001–0011) and the **five skills are scaffolded and now fully deepened** in `.claude/skills/`: `on-ramp`, `cadrage`, `traiter`, `suivi`, `classement`. Each has a description, steps, and completion criteria, using the fixed leading words (skill names + the CONTEXT.md glossary).
+
+This session **grilled and closed open item 1** — `on-ramp` and `classement`, to the same depth the other three skills got:
+
+- [ADR-0010](docs/adr/0010-on-ramp-reroutes-when-the-true-shape-reveals-itself.md): `on-ramp`'s routing stays **one** question (Projet vs. one-off); classement-vs-inline is a cheap clarifying follow-up on the "No" leaf, not a peer routing decision. If the true shape of the work only reveals itself once a path is already underway, `on-ramp` stops and redirects to `/cadrage` — in either direction — since the Dry-run gate means nothing has touched disk yet.
+- [ADR-0011](docs/adr/0011-classement-can-reorganize-inside-a-projet-but-stays-blind-to-the-manifeste.md): `classement` may run **inside** an already-`cadrage`'d Projet to reorganize Éléments requis already `obtenu` (rename, relocate), but it never reads, writes, or cross-references that Projet's Manifeste — Statut lives only there, and `classement`'s job is physical placement, never state.
+- `classement`'s Dry-run now **blocks on naming collisions** (two source files that would land on the same final name) — a plain corollary of ADR-0002's "no silent loss," recorded directly in the skill body, not a new ADR.
+- [CONTEXT.md](CONTEXT.md) **bank's skills** section updated with the re-routing and Manifeste-blindness rules; [on-ramp](.claude/skills/on-ramp/SKILL.md) gained step 3 (re-routing) and a sharpened step 2; [classement](.claude/skills/classement/SKILL.md) intro and step 3 updated for in-Projet use and the collision check.
 
 The last working session **grilled the `suivi` Relance cadence** and pushed the decisions all the way through:
 
@@ -30,15 +37,15 @@ Don't re-derive any of the above — read the ADRs and the glossary; they are th
 
 ## Open items (in priority order)
 
-1. **`on-ramp` and `classement` are still thin scaffolds** — steps exist, bodies not deepened.
-2. **No concrete Manifeste template yet.** The exact frontmatter fields, table format, cadence syntax, per-Livrable override field, judge/source columns (ADR-0008), and Relance log format are described in prose but not pinned to a real Markdown example. Worth pinning once, since `cadrage` writes it and `suivi`/`traiter` read it — including how the step-2 rejection log entry (ADR-0007) actually looks in Markdown.
-3. **Default cadence `T-14 / T-7 / T-2` is provisional** — confirm the shipped numbers.
-4. **v2 (not v1):** léger scheduled nudge to the operator via the `schedule` skill. Design already traced in ADR-0006; do not build in v1.
+1. **No concrete Manifeste template yet.** The exact frontmatter fields, table format, cadence syntax, per-Livrable override field, judge/source columns (ADR-0008), and Relance log format are described in prose but not pinned to a real Markdown example. Worth pinning once, since `cadrage` writes it and `suivi`/`traiter` read it — including how the step-2 rejection log entry (ADR-0007) actually looks in Markdown.
+2. **Default cadence `T-14 / T-7 / T-2` is provisional** — confirm the shipped numbers.
+3. **v2 (not v1):** léger scheduled nudge to the operator via the `schedule` skill. Design already traced in ADR-0006; do not build in v1.
+
+All five skill bodies are now deepened to the same level — there is no more "thin scaffold" open item. The remaining items are about pinning concrete details (a template, a number), not about grilling a design decision.
 
 ## Suggested skills for the next session
 
-- `/grilling` — for open item 1 (grill `on-ramp`/`classement` before deepening bodies), or to pin down open item 2's concrete Manifeste template.
-- `/domain-modeling` — to record any decision that comes out of grilling into an ADR or CONTEXT.md **before** editing skill bodies (keep the ADR the source of truth, not the scaffold).
+- `/domain-modeling` or a plain edit — open item 1 (the concrete Manifeste template) is mostly a formatting exercise now that every field it needs (judge/source, cadence override, rejection log entry) is already decided; it may not need a full `/grilling` pass.
 - Reference `writing-great-skills` (`.claude/skills/writing-great-skills/SKILL.md`) while filling bodies — leading words, completion criteria, progressive disclosure.
 
 ## Notes / caveats
