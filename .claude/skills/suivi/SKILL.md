@@ -62,8 +62,8 @@ Due-ness is evaluated **now**, at this invocation — never scheduled (ADR-0006)
 
 The target — and whether a Dry-run gate applies — depends on direction. **Outward** goes to a third party and is irreversible; **inward** just surfaces to the operator (ADR-0006):
 
-- **`manquant` Livrable → outward.** Draft a message chasing the **third party** for the missing item. This is the only case that leaves the desk, so it is **Dry-run gated**: present the draft, send only on the operator's confirmation. Nothing outward fires unattended in v1.
-- **`à corriger` Livrable → inward.** Surface a nudge to the **operator** to fix the element before the resubmission date (the fix is `/traiter` work); the third party is not re-contacted until resubmission. Carry the rejection motif so it reads as a correction, not a first ask. No outward send, so no gate — it points the operator at `/traiter`.
+- **`manquant` Livrable → outward.** Draft a message chasing the **source** if the row names one, else the **judge** (ADR-0008) — for the missing item. This is the only case that leaves the desk, so it is **Dry-run gated**: present the draft, send only on the operator's confirmation. Nothing outward fires unattended in v1.
+- **`à corriger` Livrable → inward.** Surface a nudge to the **operator** to fix the element before the resubmission date (the fix is `/traiter` work); the **judge** is not re-contacted until resubmission. Carry the rejection motif so it reads as a correction, not a first ask. No outward send, so no gate — it points the operator at `/traiter`.
 - **Ressource → inward.** Its nudge *is* the step-3 completeness line ("still missing X"); no separate message, no gate.
 
 **Completion criterion:** every due Relance is drafted and correctly targeted; every **outward** (third-party) Relance has passed the operator's Dry-run before sending.
