@@ -147,3 +147,13 @@ set of Éléments requis over time?* (ADR-0005):
 `cadrage`, `traiter`, `suivi`, and `classement` are user-invoked (zero context load; the
 on-ramp tells the operator which to type). There is **no `to-issues` equivalent** — the
 Éléments requis *are* the issues.
+
+If the true shape of the work only reveals itself once one of these paths is already
+underway — an inline one-off that turns out to need accretion over time, or a stock handed
+to `classement` that turns out to be a Projet's own Éléments requis — on-ramp stops and
+redirects to `cadrage` rather than continuing on the wrong path; nothing is lost, since the
+Dry-run gate means nothing has touched disk yet (ADR-0010). `classement` may also run
+**inside** an already-`cadrage`'d Projet, to reorganize Éléments requis already `obtenu`
+(rename, relocate) — but it never writes to, reads, or cross-references that Projet's
+Manifeste; Statut lives only there, and `classement`'s job is physical placement, never state
+(ADR-0011).
