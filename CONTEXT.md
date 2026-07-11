@@ -42,7 +42,15 @@ _Avoid_: requirement, item.
 A subtype of Élément requis that is *submitted to a third party* (a jury, an
 administration, a client, a publisher). Because it is judged externally, it can be
 rejected and sent back — so it alone can carry the `à corriger` status, and it alone
-carries a real external deadline that drives a graduated Relance cadence.
+carries a real external deadline that drives a graduated Relance cadence. Carries a
+**judge** (who receives and can reject it — always present) and, optionally, a distinct
+**source** (whoever the operator is actually waiting on to supply it, when that isn't the
+operator themselves — e.g. a recommendation letter's recommender is not the jury judging
+the assembled dossier) (ADR-0008). `à corriger` assumes a rejection that can be corrected
+and resubmitted *to the same judge*; a **terminal** rejection (no second attempt
+possible) invalidates the Projet's plan itself, not the element's Statut — it sends the
+operator back to `cadrage` to drop the Livrable or open a new one against a different
+judge, not to a status `suivi`/`traiter` need to know about.
 _Avoid_: deliverable (English), document, pièce justificative (too admin-specific).
 
 **Ressource**:
@@ -54,10 +62,15 @@ _Avoid_: resource (English), reference, ressource de cadrage.
 ### Status
 
 **Statut** (of an Élément requis):
-Where a single Élément requis stands. The flat set is **obtenu** (in hand and valid),
-**manquant** (not yet obtained), and — for a Livrable only — **à corriger** (submitted
-but sent back as wrong/incomplete). Deliberately flat, not a branched
-submitter→reviewer→approver machine.
+Where a single Élément requis stands. The flat set is **obtenu**, **manquant** (not yet
+obtained), and — for a Livrable only — **à corriger** (submitted but sent back as
+wrong/incomplete). **obtenu** means different things per subtype: for a Ressource, in
+hand and valid (nothing left to check); for a Livrable, submitted and presumed fine —
+optimistic, not a third-party verdict, since the system has no way to know the verdict
+until told (ADR-0007). A rejection is exactly the event that contradicts that optimism
+and moves a Livrable to `à corriger`. Deliberately flat, not a branched
+submitter→reviewer→approver machine — there is no separate "submitted, awaiting
+judgment" status.
 _Avoid_: present/absent, complete/incomplete, en construction/en instruction (a
 platform's states, not ours).
 
@@ -73,10 +86,10 @@ _Avoid_: progress, completion percentage (as a stored value), advancement.
 
 **Relance**:
 An action taken to close a gap on an Élément requis. Its *target* depends on the element's
-state: a `manquant` **Livrable** chases the third party; a **Ressource** nudges the
-operator; and an `à corriger` **Livrable** *also* nudges the operator — to fix the element
-before resubmission — **not** the third party, who is not re-contacted until the corrected
-Livrable is resubmitted. Computed as *due* at invocation time from the element's deadline
+state: a `manquant` **Livrable** chases its **source** if one is set, else its **judge**
+(ADR-0008); a **Ressource** nudges the operator; and an `à corriger` **Livrable** *also*
+nudges the operator — to fix the element before resubmission — **not** the judge, who is
+not re-contacted until the corrected Livrable is resubmitted. Computed as *due* at invocation time from the element's deadline
 and a graduated cadence, then drafted and gated by a Dry-run before it is sent (ADR-0006) —
 never fired unattended by a background scheduler in v1. On an `à corriger` Livrable it
 carries the rejection motif, which colors the nudge and is cited at resubmission. Recorded

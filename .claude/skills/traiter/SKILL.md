@@ -6,38 +6,40 @@ disable-model-invocation: true
 
 # Traiter
 
-Advances **one Élément requis** to `obtenu`. The acting half of the loop; `/suivi` is the reporting half. Runs against the **Manifeste** written by `/cadrage`.
+Advances Éléments requis to `obtenu`. The acting half of the loop; `/suivi` is the reporting half. Runs against the **Manifeste** written by `/cadrage`.
 
-Handle a single element per run — the deep completion criterion is per-element, not per-Projet, so batching hides premature completion.
+Handle one **Livrable** per run — its completion criterion is judged by a real third party, so batching hides premature completion. A **Ressource** carries none of that risk (never judged, never `à corriger`, never sent anywhere), so several may be advanced together in one run (ADR-0009).
+
+`traiter` does not check dependencies between Éléments requis (e.g. one Livrable needing another already `obtenu`) — the operator, working a human-sized dossier, is expected to know that themselves. Deliberately out of scope, not an oversight.
 
 ## Steps
 
 ### 1. Pick the Élément requis
 
-Read the **Manifeste**. Choose one element that is `manquant` or `à corriger` to advance this run.
+Read the **Manifeste**. Choose either one **Livrable** that is `manquant` or `à corriger`, or one or more **Ressources** that are `manquant`, to advance this run.
 
-**Completion criterion:** exactly one Élément requis is selected, and its current **Statut** is known.
+**Completion criterion:** exactly one Livrable, or one or more Ressources, is selected, and each selected element's current **Statut** is known.
 
 ### 2. Write its Definition-of-Done
 
-Write or refresh the checkable criteria for *this* element reaching `obtenu`. For an `à corriger` **Livrable**, fold in what the third party sent it back for.
+Write or refresh the checkable criteria for each selected element reaching `obtenu`. For an `à corriger` **Livrable**, fold in the rejection motif that `/suivi` recorded in the element's Relance log when the rejection came in (ADR-0007) — what the judge sent it back for.
 
-**Completion criterion:** a checklist exists that, when green, means this element is `obtenu`.
+**Completion criterion:** a checklist exists per selected element that, when green, means it is `obtenu`.
 
 ### 3. Do the work into the Classement
 
-Produce or obtain the element and place it in the **Classement** under the Projet's naming scheme.
+Produce or obtain each selected element and place it in the **Classement** under the Projet's naming scheme.
 
-**Completion criterion:** the file exists in the Classement.
+**Completion criterion:** each element's file exists in the Classement.
 
-### 4. Dry-run against the Definition-of-Done
+### 4. Confirm against the Definition-of-Done
 
-Present the proposed change against the element's Definition-of-Done for the operator to confirm before it is committed (ADR-0002).
+For a **Livrable**, present the proposed change against its Definition-of-Done for the operator to confirm before it is committed — a formal **Dry-run** (ADR-0002), since it's headed to a real third party. For a **Ressource**, an informal confirmation that the criteria are met is enough — no formal Dry-run, since nothing leaves the desk (ADR-0009).
 
-**Completion criterion:** the operator has confirmed the Dry-run.
+**Completion criterion:** the operator has confirmed each selected element (Dry-run for a Livrable, informal confirmation for a Ressource).
 
 ### 5. Update the Statut in the Manifeste
 
-On confirm, set the element's **Statut** in the Manifeste: `manquant → obtenu`, or `à corriger → obtenu`. Do **not** touch any completeness total — **Suivi de complétude** is computed live by `/suivi`, never stored (ADR-0004).
+On confirm, set each selected element's **Statut** in the Manifeste: `manquant → obtenu`, or `à corriger → obtenu`. Do **not** touch any completeness total — **Suivi de complétude** is computed live by `/suivi`, never stored (ADR-0004).
 
-**Completion criterion:** the element's row in the Manifeste reads `obtenu` and its Definition-of-Done is green.
+**Completion criterion:** each selected element's row in the Manifeste reads `obtenu` and its Definition-of-Done is green.
